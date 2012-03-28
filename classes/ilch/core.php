@@ -1,6 +1,19 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+/**
+ * Ilch extension of the Kohana_Core class
+ *
+ * @package    Ilch
+ * @category   Core
+ * @author     Ilch Team
+ * @copyright  (c) 2012 Ilch Team
+ * @license    http://www.ilch-pluto.net/license
+ */
 class Ilch_Core extends Kohana_Core {
+	
+	// CMS Release version and codename
+	const CMS_VERSION  = '2.0.0';
+	const CMS_CODENAME = 'Pluto';
 	
 	/**
 	 * @var  array   Include paths that are used to find files
@@ -20,8 +33,11 @@ class Ilch_Core extends Kohana_Core {
 		'contents' => array(),
 		'ilch' => array(
 			'bootstrap'		=> TRUE,
+			'database'		=> TRUE,
+			'event'			=> TRUE,
 			'fontawesome'	=> TRUE,
 			'jelly'			=> TRUE,
+			'jquery'		=> TRUE,
 		),
 		'kohana' => array(
 			'auth'		=> FALSE,
@@ -68,6 +84,9 @@ class Ilch_Core extends Kohana_Core {
 	{
 		parent::init($settings);
 		
+		// Attach the file write to logging. Multiple writers are supported.
+		Ilch::$log->attach(new Log_File(APPPATH.'logs'));
+		
 		// Merge custom default modules
 		if (isset($settings['default_modules']) AND is_array($settings['default_modules']))
 		{
@@ -84,10 +103,13 @@ class Ilch_Core extends Kohana_Core {
 		Ilch::$config->attach(new Config_File);
 		
 		// Attach a database reader to config
-		//Ilch::$config->attach(new Config_Database);
+		Ilch::$config->attach(new Config_Database);
 		
 		// Initialize all modules
 		Ilch::init_modules();
+		
+		// Run event
+		Event::run('Ilch_Core::init::after');
 	}
 	
 	/**
@@ -100,6 +122,9 @@ class Ilch_Core extends Kohana_Core {
 	 */
 	public static function deinit()
 	{
+		// Run event
+		Event::run('Ilch_Core::deinit::before');
+		
 		if (Ilch::$_init)
 		{
 			// Run parent method
@@ -108,6 +133,9 @@ class Ilch_Core extends Kohana_Core {
 			// Reset internal storage
 			Ilch::$_paths   = array(APPLICATION, ILCH_SYSTEM, KOHANA_SYSTEM);
 		}
+		
+		// Run event
+		Event::run('Ilch_Core::deinit::after');
 	}
 	
 	/**
@@ -148,6 +176,11 @@ class Ilch_Core extends Kohana_Core {
 						
 						$check = (($f_arg <= Ilch::$environment AND $s_arg >= Ilch::$environment) OR ($f_arg >= Ilch::$environment AND $s_arg <= Ilch::$environment));
 					}
+					// One argument
+					elseif (count($condition) == 1)
+					{
+						$check = (constant('Ilch::'.strtoupper(array_shift($condition))) == Ilch::$environment);
+					}
 				}
 				
 				// Save module
@@ -170,14 +203,20 @@ class Ilch_Core extends Kohana_Core {
 	 *
 	 * @param   array  list of module paths
 	 * @param   bool   ignore missing modules
+	 * @param   bool   overload loaded modules
 	 * @return  array  enabled modules
 	 */
-	public static function modules(array $modules = NULL, $ignore_missing = TRUE)
+	public static function modules(array $modules = NULL, $ignore_missing = TRUE, $overload_modules = FALSE)
 	{
 		if ($modules === NULL)
 		{
 			// Not changing modules, just return the current set
 			return Ilch::$_modules;
+		}
+
+		if ( ! $overload_modules)
+		{
+			$modules = array_merge(Ilch::$_modules, $modules);
 		}
 
 		// Start a new list of include paths, APPPATH first
@@ -209,6 +248,9 @@ class Ilch_Core extends Kohana_Core {
 
 		// Set the current module list
 		Ilch::$_modules = $modules;
+
+		// Run event
+		Event::run('Ilch_Core::modules::after');
 
 		return Ilch::$_modules;
 	}
