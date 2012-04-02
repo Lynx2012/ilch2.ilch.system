@@ -38,13 +38,13 @@ class Ilch_Core extends Kohana_Core {
 			'fontawesome'	=> TRUE,
 			'jelly'			=> TRUE,
 			'jquery'		=> TRUE,
-		),
+		), 
 		'kohana' => array(
 			'auth'		=> FALSE,
 			'cache'		=> array('PRODUCTION', 'STAGING'),
 			'codebench'	=> 'DEVELOPMENT',
 			'database'	=> TRUE,
-			'image'		=> FALSE,
+			'image'		=> TRUE,
 			'orm'		=> FALSE,
 			'unittest'	=> 'DEVELOPMENT',
 			'userguide'	=> array('TESTING', 'DEVELOPMENT'),
@@ -104,6 +104,9 @@ class Ilch_Core extends Kohana_Core {
 		
 		// Attach a database reader to config
 		Ilch::$config->attach(new Config_Database);
+		
+		// Load custom modules
+		Ilch::_load_custom_modules();
 		
 		// Initialize all modules
 		Ilch::init_modules();
@@ -193,6 +196,30 @@ class Ilch_Core extends Kohana_Core {
 		
 		// Load modules
 		return Ilch::modules($modules, FALSE);
+	}
+
+	/**
+	 * Read and load default modules
+	 * 
+	 * @return Ilch::modules()
+	 */
+	protected static function _load_custom_modules()
+	{
+		// Create empty module array
+		$modules = array();
+		
+		$result = Jelly::query('modules')->active()->order()->execute();
+		
+		foreach($result as $row)
+		{
+		    if ($row->loaded())
+		    {
+		    	$modules[strtolower($row->source.'_module_'.$row->name)] = constant(strtoupper($row->source.'_MODULE')).$row->name;
+			}
+		}
+		
+		// Load modules
+		return Ilch::modules($modules, TRUE);
 	}
 	
 	/**
