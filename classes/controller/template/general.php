@@ -10,11 +10,11 @@ class Controller_Template_General extends Controller_Template {
 	 */
 	public function before()
 	{
-		// Run event
-		Event::run('Controller_Template_General::before::before', $this);
-
 		// Run anything that need to run before this.
 		parent::before();		
+
+		// Run event
+		Event::run('Controller_Template_General::before::before', $this);
 		
 		if ($this->auto_render)
 		{

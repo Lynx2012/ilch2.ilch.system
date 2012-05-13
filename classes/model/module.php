@@ -9,12 +9,12 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Model_Modules extends Jelly_Model
+class Model_Module extends Jelly_Model
 {
     public static function initialize(Jelly_Meta $meta)
     {
     	// Set table name
-    	$meta->table('modules');
+    	$meta->table('module');
 		
         // Fields defined by the model
         $meta->fields(array(

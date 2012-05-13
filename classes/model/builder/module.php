@@ -9,7 +9,7 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Model_Builder_Modules extends Jelly_Builder
+class Model_Builder_Module extends Jelly_Builder
 {
     public function active()
 	{

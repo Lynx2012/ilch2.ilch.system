@@ -5,7 +5,7 @@ defined('SYSPATH') or die('No direct script access.');
 class Controller_Template_Frontend extends Controller_Template_General {
 
 	// Festlegen des Templates
-	public $template = 'index';
+	public $template = 'frontend/index';
 
 	public function before()
 	{
@@ -15,10 +15,13 @@ class Controller_Template_Frontend extends Controller_Template_General {
 		// Run anything that need ot run before this.
 		parent::before();
 		
+		// Load theme
+		Theme::load('frontent');
+		
 		if ($this->auto_render)
 		{
 			// Add Styles by Config
-			$theme_styles = Kohana::$config->load('theme')->frontend['media']['styles'];
+			$theme_styles = Ilch::$config->load('theme')->frontend['media']['styles'];
 			if (is_array($theme_styles) && count($theme_styles) >= 1)
 			{
 				$this->template->styles = array_merge($this->template->styles, $theme_styles);
