@@ -208,7 +208,7 @@ class Ilch_Core extends Kohana_Core {
 		// Create empty module array
 		$modules = array();
 		
-		$result = Jelly::query('modules')->active()->order()->execute();
+		$result = Jelly::query('module')->active()->order()->execute();
 		
 		foreach($result as $row)
 		{
