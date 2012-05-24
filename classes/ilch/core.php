@@ -26,32 +26,6 @@ class Ilch_Core extends Kohana_Core {
 	public static $environment = Ilch::PRODUCTION;
 	
 	/**
-	 * @var  array   Default modules to load on startup
-	 */
-	protected static $_default_modules = array(
-		'application' => array(),
-		'contents' => array(),
-		'ilch' => array(
-			'bootstrap'		=> TRUE,
-			'database'		=> TRUE,
-			'event'			=> TRUE,
-			'fontawesome'	=> TRUE,
-			'jelly'			=> TRUE,
-			'jquery'		=> TRUE,
-		), 
-		'kohana' => array(
-			'auth'		=> FALSE,
-			'cache'		=> array('PRODUCTION', 'STAGING'),
-			'codebench'	=> 'DEVELOPMENT',
-			'database'	=> TRUE,
-			'image'		=> TRUE,
-			'orm'		=> FALSE,
-			'unittest'	=> 'DEVELOPMENT',
-			'userguide'	=> array('TESTING', 'DEVELOPMENT'),
-		),
-	);
-	
-	/**
 	 * Initializes the environment:
 	 *
 	 * - Disables register_globals and magic_quotes_gpc
@@ -87,6 +61,12 @@ class Ilch_Core extends Kohana_Core {
 		// Attach the file write to logging. Multiple writers are supported.
 		Ilch::$log->attach(new Log_File(APPPATH.'logs'));
 		
+        // Auto detect base url
+        if (!isset($settings['base_url']))
+        {
+            Ilch::$base_url = preg_replace('/[^\/]+$/', '', $_SERVER['SCRIPT_NAME']);
+        }
+        
 		// Merge custom default modules
 		if (isset($settings['default_modules']) AND is_array($settings['default_modules']))
 		{
@@ -97,7 +77,7 @@ class Ilch_Core extends Kohana_Core {
 		}
 		
 		// Load default modules
-		Ilch::_load_default_modules();
+		Module_Loader::load((array) Module_Loader::MODULES_DEFAULTS, FALSE, TRUE, FALSE);
 		
 		// Attach a file reader to config
 		Ilch::$config->attach(new Config_File);
@@ -106,10 +86,7 @@ class Ilch_Core extends Kohana_Core {
 		Ilch::$config->attach(new Config_Database);
 		
 		// Load custom modules
-		Ilch::_load_custom_modules();
-		
-		// Initialize all modules
-		Ilch::init_modules();
+		Module_Loader::load((array) Module_Loader::MODULES_DATABASE);
 		
 		// Run event
 		Event::run('Ilch_Core::init::after');
@@ -134,93 +111,32 @@ class Ilch_Core extends Kohana_Core {
 			parent::deinit();
 			
 			// Reset internal storage
-			Ilch::$_paths   = array(APPLICATION, ILCH_SYSTEM, KOHANA_SYSTEM);
+			Ilch::set_paths(array(APPLICATION, ILCH_SYSTEM, KOHANA_SYSTEM));
 		}
 		
 		// Run event
 		Event::run('Ilch_Core::deinit::after');
 	}
-	
-	/**
-	 * Read and load default modules
-	 * 
-	 * @return Ilch::modules()
-	 */
-	protected static function _load_default_modules()
-	{
-		// Create empty module array
-		$modules = array();
-		
-		// Collect modules
-		foreach(Ilch::$_default_modules AS $key => $val)
-		{
-			foreach($val AS $name => $condition)
-			{
-				$check = FALSE;
-				
-				// Condition is a boolean value
-				if (is_bool($condition))
-				{
-					$check = $condition;
-				}
-				// Condition is a string
-				elseif (is_string($condition))
-				{
-					$check = (constant('Ilch::'.strtoupper($condition)) == Ilch::$environment);
-				}
-				// Condition is a array
-				elseif (is_array($condition))
-				{
-					// Two arguments
-					if (count($condition) > 1)
-					{
-						$f_arg = constant('Ilch::'.strtoupper(array_shift($condition)));
-						$s_arg = constant('Ilch::'.strtoupper(array_shift($condition)));
-						
-						$check = (($f_arg <= Ilch::$environment AND $s_arg >= Ilch::$environment) OR ($f_arg >= Ilch::$environment AND $s_arg <= Ilch::$environment));
-					}
-					// One argument
-					elseif (count($condition) == 1)
-					{
-						$check = (constant('Ilch::'.strtoupper(array_shift($condition))) == Ilch::$environment);
-					}
-				}
-				
-				// Save module
-				if ($check)
-				{
-					$modules[strtolower($key.'_module_'.$name)] = constant(strtoupper($key.'_MODULE')).$name;
-				}
-			}
-		}
-		
-		// Load modules
-		return Ilch::modules($modules, FALSE);
-	}
-
-	/**
-	 * Read and load default modules
-	 * 
-	 * @return Ilch::modules()
-	 */
-	protected static function _load_custom_modules()
-	{
-		// Create empty module array
-		$modules = array();
-		
-		$result = Jelly::query('module')->active()->order()->execute();
-		
-		foreach($result as $row)
-		{
-		    if ($row->loaded())
-		    {
-		    	$modules[strtolower($row->source.'_module_'.$row->name)] = constant(strtoupper($row->source.'_MODULE')).$row->name;
-			}
-		}
-		
-		// Load modules
-		return Ilch::modules($modules, TRUE);
-	}
+    
+    /**
+     * Set include paths
+     * @param array
+     * @return array
+     */
+    public static function set_paths(array $value)
+    {
+        Ilch::$_paths = $value;
+        return Ilch::get_paths();
+    }
+    
+    /**
+     * Get include paths
+     * @return array
+     */
+    public static function get_paths()
+    {
+        return Ilch::$_paths;
+    }
 	
 	/**
 	 * Changes the currently enabled modules. Module paths may be relative
@@ -231,73 +147,18 @@ class Ilch_Core extends Kohana_Core {
 	 * @param   array  list of module paths
 	 * @param   bool   ignore missing modules
 	 * @param   bool   overload loaded modules
+     * @param   bool   auto initialize modules
 	 * @return  array  enabled modules
+     * @deprecated please use Module_Loader::load($modules, $ignore_missing, $overload, $initialize) and Module_Loader::get_loaded() instead
 	 */
-	public static function modules(array $modules = NULL, $ignore_missing = TRUE, $overload_modules = FALSE)
+	public static function modules(array $modules = NULL, $ignore_missing = TRUE, $overload = FALSE, $initialize = TRUE)
 	{
 		if ($modules === NULL)
 		{
 			// Not changing modules, just return the current set
-			return Ilch::$_modules;
+			return Module_Loader::get_loaded();
 		}
 
-		if ( ! $overload_modules)
-		{
-			$modules = array_merge(Ilch::$_modules, $modules);
-		}
-
-		// Start a new list of include paths, APPPATH first
-		$paths = array(APPLICATION);
-
-		foreach ($modules as $name => $path)
-		{
-			if (is_dir($path))
-			{
-				// Add the module to include paths
-				$paths[] = $modules[$name] = realpath($path).DS;
-			}
-			elseif ( ! $ignore_missing)
-			{
-				// This module is invalid, remove it
-				throw new Kohana_Exception('Attempted to load an invalid or missing module \':module\' at \':path\'', array(
-					':module' => $name,
-					':path'   => Debug::path($path),
-				));
-			}
-		}
-
-		// Finish the include paths by adding ILCH_SYSPATH and SYSPATH
-		$paths[] = ILCH_SYSTEM;
-		$paths[] = KOHANA_SYSTEM;
-
-		// Set the new include paths
-		Ilch::$_paths = $paths;
-
-		// Set the current module list
-		Ilch::$_modules = $modules;
-
-		// Run event
-		Event::run('Ilch_Core::modules::after');
-
-		return Ilch::$_modules;
-	}
-
-	/**
-	 * Initialize all modules
-	 * 
-	 * @return void
-	 */
-	public static function init_modules()
-	{
-		foreach (Ilch::$_modules as $path)
-		{
-			$init = $path.'init'.EXT;
-
-			if (is_file($init))
-			{
-				// Include the module initialization file once
-				require_once $init;
-			}
-		}
+        return Module_Loader::load($modules, $ignore_missing, $overload, $initialize);
 	}
 }
