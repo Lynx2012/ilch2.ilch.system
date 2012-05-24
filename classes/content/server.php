@@ -9,4 +9,4 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Module_Server extends Ilch_Module_Server {}
+class Content_Server extends Ilch_Content_Server {}

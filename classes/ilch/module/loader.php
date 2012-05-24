@@ -9,7 +9,7 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Ilch_Module_Loader {
+class Ilch_Module_Loader extends Content_Loader {
 	
 
 	

@@ -9,4 +9,4 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Module_Browser extends Ilch_Module_Browser {}
+class Content_Browser extends Ilch_Content_Browser {}
