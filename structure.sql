@@ -44,3 +44,19 @@ ALTER TABLE  `configurations` CHANGE  `id`  `id` INT( 10 ) NOT NULL AUTO_INCREME
 
 RENAME TABLE  `configurations` TO  `configuration` ;
 RENAME TABLE  `modules` TO  `module` ;
+
+
+-- ----------------------------------------------------------
+-- ---------------------- 25.05.2012 ------------------------
+-- ----------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `theme` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `source` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `version` varchar(255) NOT NULL,
+  `installed` tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `theme` (`id`, `source`, `name`, `version`, `installed`) VALUES (NULL, 'ilch', 'pluto', '1.0', '1');

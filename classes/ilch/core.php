@@ -18,7 +18,7 @@ class Ilch_Core extends Kohana_Core {
 	/**
 	 * @var  array   Include paths that are used to find files
 	 */
-	protected static $_paths = array(APPLICATION, ILCH_SYSTEM, KOHANA_SYSTEM);
+	protected static $_paths = array(APPLICATION_SYSTEM, ILCH_SYSTEM, KOHANA_SYSTEM);
 	
 	/**
 	 * @var  string  Current environment name
@@ -111,7 +111,7 @@ class Ilch_Core extends Kohana_Core {
 			parent::deinit();
 			
 			// Reset internal storage
-			Ilch::set_paths(array(APPLICATION, ILCH_SYSTEM, KOHANA_SYSTEM));
+			Ilch::set_paths(array(APPLICATION_SYSTEM, ILCH_SYSTEM, KOHANA_SYSTEM));
 		}
 		
 		// Run event

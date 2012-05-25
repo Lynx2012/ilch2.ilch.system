@@ -2,7 +2,7 @@
 
 defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Template_Frontend extends Controller_Template_General {
+class Controller_Template_Frontend extends Controller_General {
 
 	// Festlegen des Templates
 	public $template = 'frontend/index';
@@ -12,11 +12,11 @@ class Controller_Template_Frontend extends Controller_Template_General {
 		// Run event
 		Event::run('Controller_Template_Frontend::before::before', $this);
 		
-		// Run anything that need ot run before this.
+        // Load frontend theme
+        Theme_Loader::load((array) Theme_Loader::THEME_FRONTEND);
+        
+		// Run anything that need ot run before this
 		parent::before();
-		
-		// Load theme
-		Theme::load('frontent');
 		
 		if ($this->auto_render)
 		{
