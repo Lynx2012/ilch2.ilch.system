@@ -41,6 +41,8 @@ class Ilch_Dir {
                 unlink($path.$file);
             }
         }
+        
+        // Close directory
         closedir($dir);
     }
     
@@ -52,5 +54,4 @@ class Ilch_Dir {
         Dir::clear($path);
         return rmdir($path);
     }
-    
 }
