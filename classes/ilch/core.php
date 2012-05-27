@@ -67,15 +67,9 @@ class Ilch_Core extends Kohana_Core {
             Ilch::$base_url = preg_replace('/[^\/]+$/', '', $_SERVER['SCRIPT_NAME']);
         }
         
-		// Merge custom default modules
-		if (isset($settings['default_modules']) AND is_array($settings['default_modules']))
-		{
-			foreach ($settings['default_modules'] AS $key => $val)
-			{
-				Ilch::$_default_modules[$key] = array_merge(Ilch::$_default_modules[$key], $val);
-			}
-		}
-		
+        // Set default ilch route
+        Route::set('default', array('Ilch', 'route'));
+        
 		// Load default modules
 		Module_Loader::load((array) Module_Loader::MODULES_DEFAULTS, FALSE, TRUE, FALSE);
 		
@@ -161,4 +155,171 @@ class Ilch_Core extends Kohana_Core {
 
         return Module_Loader::load($modules, $ignore_missing, $overload, $initialize);
 	}
+    
+    /**
+     * Searches for a file in the [Cascading Filesystem](kohana/files), and
+     * returns the path to the file that has the highest precedence, so that it
+     * can be included.
+     *
+     * When searching the "config", "messages", or "i18n" directories, or when
+     * the `$array` flag is set to true, an array of all the files that match
+     * that path in the [Cascading Filesystem](kohana/files) will be returned.
+     * These files will return arrays which must be merged together.
+     *
+     * If no extension is given, the default extension (`EXT` set in
+     * `index.php`) will be used.
+     *
+     *     // Returns an absolute path to views/template.php
+     *     Ilch::find_file('views', 'template');
+     *
+     *     // Returns an absolute path to media/css/style.css
+     *     Ilch::find_file('media', 'css/style', 'css');
+     *
+     *     // Returns an array of all the "mimes" configuration files
+     *     Ilch::find_file('config', 'mimes');
+     *
+     * @param   string   directory name (views, i18n, classes, extensions, etc.)
+     * @param   string   filename with subdirectory
+     * @param   string   extension to search for
+     * @param   boolean  return an array of files?
+     * @return  array    a list of files when $array is TRUE
+     * @return  string   single file path
+     */
+    public static function find_file($dir, $file, $ext = NULL, $array = FALSE)
+    {
+        if ($ext === NULL)
+        {
+            // Use the default extension
+            $ext = EXT;
+        }
+        elseif ($ext)
+        {
+            // Prefix the extension with a period
+            $ext = ".{$ext}";
+        }
+        else
+        {
+            // Use no extension
+            $ext = '';
+        }
+
+        // Create a partial path of the filename
+        $path = $dir.DIRECTORY_SEPARATOR.$file.$ext;
+
+        if (Ilch::$caching === TRUE AND isset(Ilch::$_files[$path.($array ? '_array' : '_path')]))
+        {
+            // This path has been cached
+            return Ilch::$_files[$path.($array ? '_array' : '_path')];
+        }
+
+        if (Ilch::$profiling === TRUE AND class_exists('Profiler', FALSE))
+        {
+            // Start a new benchmark
+            $benchmark = Profiler::start('Kohana', __FUNCTION__);
+        }
+
+        if ($array OR in_array($dir, array('config', 'i18n', 'messages')))
+        {
+            // Include paths must be searched in reverse
+            $paths = array_reverse(Ilch::$_paths);
+
+            // Array of files that have been found
+            $found = array();
+
+            foreach ($paths as $dir)
+            {
+                if (is_file($dir.$path))
+                {
+                    // This path has a file, add it to the list
+                    $found[] = $dir.$path;
+                }
+            }
+        }
+        else
+        {
+            // The file has not been found yet
+            $found = FALSE;
+
+            foreach (Ilch::$_paths as $dir)
+            {
+                if (is_file($dir.$path))
+                {
+                    // A path has been found
+                    $found = $dir.$path;
+
+                    // Stop searching
+                    break;
+                }
+            }
+        }
+
+        // Prepend theme caching
+        if (Ilch::$caching === TRUE)
+        {
+            $is_application_theme = (is_string($found) AND substr($found, 0, strlen(APPLICATION_THEME)) == APPLICATION_THEME);
+            $is_ilch_theme = (is_string($found) AND substr($found, 0, strlen(ILCH_THEME)) == ILCH_THEME);
+        }
+
+        if (Ilch::$caching === TRUE AND !$is_application_theme AND !$is_ilch_theme)
+        {
+            // Add the path to the cache
+            Ilch::$_files[$path.($array ? '_array' : '_path')] = $found;
+
+            // Files have been changed
+            Ilch::$_files_changed = TRUE;
+        }
+        
+        if (isset($benchmark))
+        {
+            // Stop the benchmark
+            Profiler::stop($benchmark);
+        }
+
+        return $found;
+    }
+
+    /**
+     * Dynamic Ilch CMS route
+     * @param string given url
+     * @return array
+     */
+    public static function route($uri)
+    {
+        // Defaults
+        $return_arr = array();
+        
+        // If Backend
+        if (preg_match('#^backend(?:/(?P<controller>[^/.,;?\n]++)(?:/(?P<action>[^/.,;?\n]++)(?:/(?P<overflow>(.*?)))?)?)?$#uD', $uri, $match))
+        {
+            // Directory
+            $return_arr['directory'] = 'backend';
+            
+            // Controller
+            $return_arr['controller'] = (isset($match[1]) === TRUE) ? $match[1] : Kohana::$config->load('ilch')->start_controller;
+            
+            // Action
+            $return_arr['action'] = (isset($match[2]) === TRUE) ? $match[2] : 'index';
+            
+            // Overflow
+            $return_arr += (isset($match[3]) === TRUE) ? explode('/', $match[3]) : array();
+        }
+        // If Frontend
+        elseif (preg_match('#^(?:(?P<controller>[^/.,;?\n]++)(?:/(?P<action>[^/.,;?\n]++)(?:/(?P<overflow>(.*?)))?)?)?$#uD', $uri, $match))
+        {
+            // Directory
+            $return_arr['directory'] = 'frontend';
+            
+            // Controller
+            $return_arr['controller'] = (isset($match[1]) === TRUE) ? $match[1] : Kohana::$config->load('ilch')->start_controller;
+            
+            // Action
+            $return_arr['action'] = (isset($match[2]) === TRUE) ? $match[2] : 'index';
+            
+            // Overflow
+            $return_arr += (isset($match[3]) === TRUE) ? explode('/', $match[3]) : array();
+        }
+        
+        // Return Route-Array
+        if ($return_arr == TRUE) return $return_arr;
+    }
 }

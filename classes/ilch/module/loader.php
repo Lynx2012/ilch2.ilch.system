@@ -26,6 +26,7 @@ class Ilch_Module_Loader extends Content_Loader {
             'fontawesome'   => TRUE,
             'jelly'         => TRUE,
             'jquery'        => TRUE,
+            'lessphp'       => TRUE,
         ), 
         'kohana' => array(
             'auth'      => FALSE,
