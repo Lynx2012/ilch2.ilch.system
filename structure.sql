@@ -60,3 +60,12 @@ CREATE TABLE IF NOT EXISTS `theme` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 INSERT INTO `theme` (`id`, `source`, `name`, `version`, `installed`) VALUES (NULL, 'ilch', 'pluto', '1.0', '1');
+
+
+-- ----------------------------------------------------------
+-- ---------------------- 27.05.2012 ------------------------
+-- ----------------------------------------------------------
+
+INSERT INTO `configuration` (`id`, `group`, `key`, `type`, `value`) VALUES
+(1, 'ilch_system', 'index_controller', 'a:2:{i:0;s:23:"Config_Field_Controller";i:1;s:4:"init";}', 's:5:"index";'),
+(2, 'ilch_system', 'theme_frontend', 'a:2:{i:0;s:18:"Config_Field_Theme";i:1;s:4:"init";}', 'i:1;');

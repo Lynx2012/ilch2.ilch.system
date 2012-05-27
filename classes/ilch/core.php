@@ -67,9 +67,6 @@ class Ilch_Core extends Kohana_Core {
             Ilch::$base_url = preg_replace('/[^\/]+$/', '', $_SERVER['SCRIPT_NAME']);
         }
         
-        // Set default ilch route
-        Route::set('default', array('Ilch', 'route'));
-        
 		// Load default modules
 		Module_Loader::load((array) Module_Loader::MODULES_DEFAULTS, FALSE, TRUE, FALSE);
 		
@@ -84,6 +81,9 @@ class Ilch_Core extends Kohana_Core {
 		
 		// Run event
 		Event::run('Ilch_Core::init::after');
+        
+        // Set ilch routing
+        Routing::init();
 	}
 	
 	/**
@@ -276,50 +276,5 @@ class Ilch_Core extends Kohana_Core {
         }
 
         return $found;
-    }
-
-    /**
-     * Dynamic Ilch CMS route
-     * @param string given url
-     * @return array
-     */
-    public static function route($uri)
-    {
-        // Defaults
-        $return_arr = array();
-        
-        // If Backend
-        if (preg_match('#^backend(?:/(?P<controller>[^/.,;?\n]++)(?:/(?P<action>[^/.,;?\n]++)(?:/(?P<overflow>(.*?)))?)?)?$#uD', $uri, $match))
-        {
-            // Directory
-            $return_arr['directory'] = 'backend';
-            
-            // Controller
-            $return_arr['controller'] = (isset($match[1]) === TRUE) ? $match[1] : Kohana::$config->load('ilch')->start_controller;
-            
-            // Action
-            $return_arr['action'] = (isset($match[2]) === TRUE) ? $match[2] : 'index';
-            
-            // Overflow
-            $return_arr += (isset($match[3]) === TRUE) ? explode('/', $match[3]) : array();
-        }
-        // If Frontend
-        elseif (preg_match('#^(?:(?P<controller>[^/.,;?\n]++)(?:/(?P<action>[^/.,;?\n]++)(?:/(?P<overflow>(.*?)))?)?)?$#uD', $uri, $match))
-        {
-            // Directory
-            $return_arr['directory'] = 'frontend';
-            
-            // Controller
-            $return_arr['controller'] = (isset($match[1]) === TRUE) ? $match[1] : Kohana::$config->load('ilch')->start_controller;
-            
-            // Action
-            $return_arr['action'] = (isset($match[2]) === TRUE) ? $match[2] : 'index';
-            
-            // Overflow
-            $return_arr += (isset($match[3]) === TRUE) ? explode('/', $match[3]) : array();
-        }
-        
-        // Return Route-Array
-        if ($return_arr == TRUE) return $return_arr;
     }
 }
