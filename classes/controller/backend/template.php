@@ -20,11 +20,13 @@ class Controller_Backend_Template extends Controller_Template {
 
         if ($this->auto_render)
         {
+        	// Get configuration
+            $config = Ilch::$config->load('theme')->get('backend');
+			
             // Add Styles by Config
-            $theme_styles = Ilch::$config->load('theme')->backend['media']['styles'];
-            if (is_array($theme_styles) && count($theme_styles) >= 1)
+            if (is_array($config['media']['styles']) && count($config['media']['styles']) >= 1)
             {
-                $this->template->styles = array_merge($this->template->styles, $theme_styles);
+                $this->template->styles = array_merge($this->template->styles, $config['media']['styles']);
             }
         }
         

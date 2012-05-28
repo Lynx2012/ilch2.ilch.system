@@ -51,7 +51,7 @@ class Ilch_Routing {
             $return_arr['directory'] = 'frontend';
             
             // Controller
-            $return_arr['controller'] = (isset($match[1]) === TRUE) ? $match[1] : Kohana::$config->load('ilch_system')->index_controller;
+            $return_arr['controller'] = (isset($match[1]) === TRUE) ? $match[1] : Ilch::$config->load('ilch_system')->get('index_controller');
             
             // Action
             $return_arr['action'] = (isset($match[2]) === TRUE) ? $match[2] : 'index';
