@@ -9,15 +9,4 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Model_Builder_Module extends Jelly_Builder
-{
-    public function active()
-	{
-		return $this->where('activated', '=', TRUE);
-	}
-	
-	public function order($sorting = 'ASC')
-	{
-		return $this->order_by('position', $sorting);
-	}
-}
+class Model_Builder_Module extends Ilch_Model_Builder_Module {}

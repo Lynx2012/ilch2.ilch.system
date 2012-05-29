@@ -1,12 +1,16 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Theme utility class
+ * Module server class
  *
  * @package    Ilch
- * @category   Core
+ * @category   Core/Module
  * @author     Ilch Team
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Theme extends Ilch_Theme {}
+class Ilch_Content_Server {
+	
+
+	
+}

@@ -1,12 +1,16 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Model for "module" table
+ * Module manager class
  *
- * @package    Ilch/Core
- * @category   Modules
+ * @package    Ilch
+ * @category   Core/Module
  * @author     Ilch Team
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Model_Module extends Ilch_Model_Module {}
+class Ilch_Module_Manager extends Content_Manager {
+	
+
+	
+}
