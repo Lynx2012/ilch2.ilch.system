@@ -9,4 +9,16 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Model_Builder_Theme extends Ilch_Model_Builder_Theme {}
+class Model_Builder_Theme extends Jelly_Builder
+{
+    public function installed()
+	{
+	    // Build query extension
+		$query = $this->where('installed', '=', TRUE);
+        
+        // Run event
+        Event::run('Model_Builder_Theme::installed::after', $this);
+        
+        return $query;
+	}
+}

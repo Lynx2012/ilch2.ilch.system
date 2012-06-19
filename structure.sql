@@ -35,7 +35,7 @@ CREATE TABLE  `modules` (
 `position` INT UNSIGNED NULL
 ) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-ALTER TABLE  `configurations` CHANGE  `id`  `id` INT( 10 ) NOT NULL AUTO_INCREMENT
+ALTER TABLE  `configurations` CHANGE  `id`  `id` INT( 10 ) NOT NULL AUTO_INCREMENT;
 
 
 -- ----------------------------------------------------------
@@ -69,3 +69,11 @@ INSERT INTO `theme` (`id`, `source`, `name`, `version`, `installed`) VALUES (NUL
 INSERT INTO `configuration` (`id`, `group`, `key`, `type`, `value`) VALUES
 (1, 'ilch_system', 'index_controller', 'a:2:{i:0;s:23:"Config_Field_Controller";i:1;s:4:"init";}', 's:5:"index";'),
 (2, 'ilch_system', 'theme_frontend', 'a:2:{i:0;s:18:"Config_Field_Theme";i:1;s:4:"init";}', 'i:1;');
+
+
+-- ----------------------------------------------------------
+-- ---------------------- 19.06.2012 ------------------------
+-- ----------------------------------------------------------
+
+ALTER TABLE `theme` DROP `source`;
+ALTER TABLE `module` DROP `source`;
