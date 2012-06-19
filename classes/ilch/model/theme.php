@@ -14,7 +14,7 @@ class Ilch_Model_Theme extends Jelly_Model
     public static function initialize(Jelly_Meta $meta)
     {
     	// Set table name
-    	$meta->table('module');
+    	$meta->table('theme');
 		
         // Fields defined by the model
         $meta->fields(array(

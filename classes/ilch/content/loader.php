@@ -136,11 +136,12 @@ class Ilch_Content_Loader {
      * @param string
      * @return string
      */
-	public static function path($name)
+	public static function find($paths, $name)
 	{
-		foreach (Module_Loader::$paths AS $path)
+		foreach ($paths AS $path)
 		{
 			if (is_dir($dir = $path.DS.$name)) return $dir;
 		}
+		return FALSE;
 	}
 }
