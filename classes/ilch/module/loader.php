@@ -11,34 +11,20 @@
  */
 class Ilch_Module_Loader extends Content_Loader {
 	
+	const LOADER_NAME = 'module';
+	
     const MODULES_DEFAULTS = 'defaults';
     const MODULES_DATABASE = 'database';
     
+	/**
+	 * @var array Paths to search modules
+	 */
+	public static $paths = array();
+	
     /**
      * @var array Default modules to load on startup
      */
-    protected static $_defaults = array(
-        'application' => array(),
-        'ilch' => array(
-            'bootstrap'     => TRUE,
-            'database'      => TRUE,
-            'event'         => TRUE,
-            'fontawesome'   => TRUE,
-            'jelly'         => TRUE,
-            'jquery'        => TRUE,
-            'lessphp'       => TRUE,
-        ), 
-        'kohana' => array(
-            'auth'      => FALSE,
-            'cache'     => array('PRODUCTION', 'STAGING'),
-            'codebench' => 'DEVELOPMENT',
-            'database'  => TRUE,
-            'image'     => TRUE,
-            'orm'       => FALSE,
-            'unittest'  => 'DEVELOPMENT',
-            'userguide' => array('TESTING', 'DEVELOPMENT'),
-        ),
-    );
+    protected static $_defaults = array('dbconfig', 'event', 'jelly', 'database');
     
     /**
      * Set default modules
@@ -93,46 +79,9 @@ class Ilch_Module_Loader extends Content_Loader {
         $modules = array();
         
         // Collect modules
-        foreach(Module_Loader::$_defaults AS $key => $val)
+        foreach(Module_Loader::$_defaults AS $name)
         {
-            foreach($val AS $name => $condition)
-            {
-                $check = FALSE;
-                
-                // Condition is a boolean value
-                if (is_bool($condition))
-                {
-                    $check = $condition;
-                }
-                // Condition is a string
-                elseif (is_string($condition))
-                {
-                    $check = (constant('Ilch::'.strtoupper($condition)) == Ilch::$environment);
-                }
-                // Condition is a array
-                elseif (is_array($condition))
-                {
-                    // Two arguments
-                    if (count($condition) > 1)
-                    {
-                        $f_arg = constant('Ilch::'.strtoupper(array_shift($condition)));
-                        $s_arg = constant('Ilch::'.strtoupper(array_shift($condition)));
-                        
-                        $check = (($f_arg <= Ilch::$environment AND $s_arg >= Ilch::$environment) OR ($f_arg >= Ilch::$environment AND $s_arg <= Ilch::$environment));
-                    }
-                    // One argument
-                    elseif (count($condition) == 1)
-                    {
-                        $check = (constant('Ilch::'.strtoupper(array_shift($condition))) == Ilch::$environment);
-                    }
-                }
-                
-                // Save module
-                if ($check)
-                {
-                    $modules[Module_Loader::name($key, $name)] = Module_Loader::path('module', $key, $name);
-                }
-            }
+	        $modules[Module_Loader::name(Module_Loader::LOADER_NAME, $name)] = Module_Loader::path($name);
         }
         
         // Load modules
@@ -160,16 +109,5 @@ class Ilch_Module_Loader extends Content_Loader {
         
         // Load modules
         return $modules;
-    }
-    
-    /**
-     * Get unique content name by group and name
-     * @param string like "ilch", "kohana" or "application"
-     * @param string
-     * @return string
-     */
-    public static function name($source, $name)
-    {
-        return strtolower(sprintf('%s_%s', $source, $name));
     }
 }

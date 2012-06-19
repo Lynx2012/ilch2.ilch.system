@@ -14,10 +14,10 @@ class Ilch_Theme_Loader extends Content_Loader {
     const THEME_BACKEND = 'backend';
     const THEME_FRONTEND = 'frontend';
 	
-    /**
-     * @var bool theme load status
-     */
-    protected static $_is_loaded = FALSE;
+	/**
+	 * @var array Paths to search themes
+	 */
+	public static $paths = array();
     
     /**
      * Set theme load status

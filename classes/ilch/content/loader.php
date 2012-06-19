@@ -120,14 +120,27 @@ class Ilch_Content_Loader {
     }
     
     /**
+     * Get unique content name by type and name
+     * @param string like "module" or "theme"
+     * @return string
+     */
+    public static function name($type, $name)
+    {
+        return strtolower(sprintf('%s_%s', $type, $name));
+    }
+	
+    /**
      * Get path to module, theme or other content
      * @param string like "module" or "theme"
      * @param string like "ilch", "kohana" or "application"
      * @param string
      * @return string
      */
-    public static function path($type, $source, $name)
-    {
-        return constant(strtoupper(sprintf('%s_%s', $source, $type))).DS.$name;
-    }
+	public static function path($name)
+	{
+		foreach (Module_Loader::$paths AS $path)
+		{
+			if (is_dir($dir = $path.DS.$name)) return $dir;
+		}
+	}
 }
