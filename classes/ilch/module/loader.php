@@ -24,7 +24,17 @@ class Ilch_Module_Loader extends Content_Loader {
     /**
      * @var array Default modules to load on startup
      */
-    protected static $_defaults = array('dbconfig', 'event', 'jelly', 'database');
+    protected static $_defaults = array(
+        'dbconfig',     // Database configuration reader
+        'jelly',        // Powerfull ORM
+        'database',     // Kohana database module
+        'bootstrap',    // Twitter Bootstrap
+        'event',        // Event handler
+        'fontawesome',  // Fontawesome extension for Twitter Bootstrap
+        'jquery',       // jQuery Javascript Framework
+        'lessphp',      // lessphp media controller extension
+        'image'         // Image manipulation module
+    );
     
     /**
      * Set default modules
