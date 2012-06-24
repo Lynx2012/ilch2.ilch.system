@@ -21,3 +21,7 @@ Module names which are reserved by the Ilch Pluto CMS or Kohana Framework:
 - inflector
 - mimes
 - session
+- credit
+- user
+- group
+- builder // jelly

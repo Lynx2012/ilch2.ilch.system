@@ -77,3 +77,44 @@ INSERT INTO `configuration` (`id`, `group`, `key`, `type`, `value`) VALUES
 
 ALTER TABLE `theme` DROP `source`;
 ALTER TABLE `module` DROP `source`;
+
+
+-- ----------------------------------------------------------
+-- ---------------------- 24.06.2012 ------------------------
+-- ----------------------------------------------------------
+
+ALTER TABLE  `configuration` CHANGE  `type`  `type` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+UPDATE  `configuration` SET  `group` =  'system' WHERE  `configuration`.`group` = 'ilch_system';
+
+CREATE TABLE IF NOT EXISTS `group` (
+  `id` int(1) unsigned NOT NULL AUTO_INCREMENT,
+  `root` int(1) unsigned NOT NULL,
+  `translate` int(1) unsigned NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+INSERT INTO `group` (`id`, `root`, `translate`, `name`, `description`) VALUES
+(1, 1, 1, 'Administrator', ''),
+(2, 0, 1, 'Members', ''),
+(3, 0, 1, 'Guests', '');
+
+ALTER TABLE  `group` CHANGE  `root`  `root` TINYINT( 1 ) UNSIGNED NOT NULL ,
+CHANGE  `translate`  `translate` TINYINT( 1 ) UNSIGNED NOT NULL;
+
+ALTER TABLE  `module` CHANGE  `id`  `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
+CHANGE  `position`  `position` INT( 11 ) UNSIGNED NULL DEFAULT NULL;
+
+ALTER TABLE  `theme` CHANGE  `id`  `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE IF NOT EXISTS `group_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `group` varchar(255) NOT NULL,
+  `key` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `group_id` (`group_id`,`group`,`key`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+RENAME TABLE  `ilch2`.`configuration` TO  `ilch2`.`config` ;
