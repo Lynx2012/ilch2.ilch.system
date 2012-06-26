@@ -79,7 +79,7 @@ class Ilch_Core extends Kohana_Core {
 		// Load custom modules
 		Module_Loader::load((array) Module_Loader::MODULES_DATABASE);
 		
-        // Set ilch routing
+        // Set ilch routes
         Routing::init();
 
 		// Run event

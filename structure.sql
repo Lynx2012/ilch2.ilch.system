@@ -1,120 +1,102 @@
 -- ----------------------------------------------------------
--- ---------------------- 28.03.2012 ------------------------
+-- ------- New statements have to be positioned above -------
 -- ----------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `configurations` (
+
+
+
+-- ----------------------------------------------------------
+-- ---------------------- 26.06.2012 ------------------------
+-- ----------------------------------------------------------
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+CREATE TABLE IF NOT EXISTS `config` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group` varchar(255) NOT NULL,
   `key` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
+  `type` text NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `group` (`group`,`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
+INSERT INTO `config` (`id`, `group`, `key`, `type`, `value`) VALUES
+(1, 'system', 'index_controller', 'a:2:{i:0;s:23:"Config_Field_Controller";i:1;s:4:"init";}', 's:5:"index";'),
+(2, 'system', 'theme_frontend', 'a:2:{i:0;s:18:"Config_Field_Theme";i:1;s:8:"frontend";}', 'i:1;'),
+(3, 'system', 'theme_backend', 'a:2:{i:0;s:18:"Config_Field_Theme";i:1;s:7:"backend";}', 'i:1;');
 
--- ----------------------------------------------------------
--- ---------------------- 01.04.2012 ------------------------
--- ----------------------------------------------------------
-
-ALTER TABLE  `configurations` DROP INDEX  `group`;
-ALTER TABLE  `configurations` CHANGE  `key`  `key` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
-
-
--- ----------------------------------------------------------
--- ---------------------- 02.04.2012 ------------------------
--- ----------------------------------------------------------
-
-CREATE TABLE  `modules` (
-`id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`source` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`version` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`installed` TINYINT( 1 ) UNSIGNED NOT NULL ,
-`activated` TINYINT( 1 ) UNSIGNED NOT NULL ,
-`position` INT UNSIGNED NULL
-) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
-
-ALTER TABLE  `configurations` CHANGE  `id`  `id` INT( 10 ) NOT NULL AUTO_INCREMENT;
-
-
--- ----------------------------------------------------------
--- ---------------------- 28.04.2012 ------------------------
--- ----------------------------------------------------------
-
-RENAME TABLE  `configurations` TO  `configuration` ;
-RENAME TABLE  `modules` TO  `module` ;
-
-
--- ----------------------------------------------------------
--- ---------------------- 25.05.2012 ------------------------
--- ----------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `theme` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `source` varchar(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS `module` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `version` varchar(255) NOT NULL,
   `installed` tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `activated` tinyint(1) unsigned NOT NULL,
+  `position` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
-INSERT INTO `theme` (`id`, `source`, `name`, `version`, `installed`) VALUES (NULL, 'ilch', 'pluto', '1.0', '1');
+INSERT INTO `module` (`id`, `name`, `version`, `installed`, `activated`, `position`) VALUES
+(1, 'userguide', '1', 1, 1, 1);
 
+CREATE TABLE IF NOT EXISTS `theme` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `version` varchar(255) NOT NULL,
+  `installed` tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
--- ----------------------------------------------------------
--- ---------------------- 27.05.2012 ------------------------
--- ----------------------------------------------------------
+INSERT INTO `theme` (`id`, `name`, `version`, `installed`) VALUES
+(1, 'pluto', '1.0', 1);
 
-INSERT INTO `configuration` (`id`, `group`, `key`, `type`, `value`) VALUES
-(1, 'ilch_system', 'index_controller', 'a:2:{i:0;s:23:"Config_Field_Controller";i:1;s:4:"init";}', 's:5:"index";'),
-(2, 'ilch_system', 'theme_frontend', 'a:2:{i:0;s:18:"Config_Field_Theme";i:1;s:4:"init";}', 'i:1;');
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `status` enum('VERIFICATION','ACTIVE','INACTIVE','BLOCKED') NOT NULL DEFAULT 'VERIFICATION',
+  `email` varchar(255) NOT NULL,
+  `nickname` varchar(255) NOT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `config` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nickname` (`nickname`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `user_auth` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `created` datetime NOT NULL,
+  `user_agent` varchar(255) NOT NULL,
+  `auth_token` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_agent` (`user_agent`,`auth_token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- ----------------------------------------------------------
--- ---------------------- 19.06.2012 ------------------------
--- ----------------------------------------------------------
-
-ALTER TABLE `theme` DROP `source`;
-ALTER TABLE `module` DROP `source`;
-
-
--- ----------------------------------------------------------
--- ---------------------- 24.06.2012 ------------------------
--- ----------------------------------------------------------
-
-ALTER TABLE  `configuration` CHANGE  `type`  `type` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
-UPDATE  `configuration` SET  `group` =  'system' WHERE  `configuration`.`group` = 'ilch_system';
-
-CREATE TABLE IF NOT EXISTS `group` (
-  `id` int(1) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `user_group` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `root` int(1) unsigned NOT NULL,
   `translate` int(1) unsigned NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `description` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `permission` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-INSERT INTO `group` (`id`, `root`, `translate`, `name`, `description`) VALUES
-(1, 1, 1, 'Administrator', ''),
-(2, 0, 1, 'Members', ''),
-(3, 0, 1, 'Guests', '');
-
-ALTER TABLE  `group` CHANGE  `root`  `root` TINYINT( 1 ) UNSIGNED NOT NULL ,
-CHANGE  `translate`  `translate` TINYINT( 1 ) UNSIGNED NOT NULL;
-
-ALTER TABLE  `module` CHANGE  `id`  `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
-CHANGE  `position`  `position` INT( 11 ) UNSIGNED NULL DEFAULT NULL;
-
-ALTER TABLE  `theme` CHANGE  `id`  `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;
-
-CREATE TABLE IF NOT EXISTS `group_permission` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL,
-  `group` varchar(255) NOT NULL,
-  `key` varchar(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS `user_group_member` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `group_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `group_id` (`group_id`,`group`,`key`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `group_id` (`group_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-RENAME TABLE  `ilch2`.`configuration` TO  `ilch2`.`config` ;
+CREATE TABLE IF NOT EXISTS `user_service` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `service` varchar(255) NOT NULL,
+  `auth_token` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

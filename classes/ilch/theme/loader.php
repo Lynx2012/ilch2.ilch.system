@@ -36,7 +36,7 @@ class Ilch_Theme_Loader extends Content_Loader {
         $default = array($key => $value);
         
         // Get ilch system configuration
-        $config = Ilch::$config->load('ilch_system');
+        $config = Ilch::$config->load('system');
 
         // Frontend theme
         if ($type == Theme_Loader::THEME_FRONTEND)
