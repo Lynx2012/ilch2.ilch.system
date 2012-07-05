@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Model for "user_service" table
+ * Model for "user_auth_service" table
  *
  * @package    Ilch/Core
  * @category   User
@@ -9,7 +9,7 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Model_User_Service extends Jelly_Model {
+class Model_User_Auth_Service extends Jelly_Model {
 
 	/**
 	 * Initialize the model
@@ -17,7 +17,7 @@ class Model_User_Service extends Jelly_Model {
 	public static function initialize(Jelly_Meta $meta)
 	{
 		// Set table name
-		$meta->table('user_service');
+		$meta->table('user_auth_service');
 
 		// Fields defined by the model
 		$meta->fields(array(
@@ -33,7 +33,7 @@ class Model_User_Service extends Jelly_Model {
 		));
 
 		// Run event
-		Event::run('Model_User_Service::initialize::after', $meta);
+		Event::run('Model_User_Auth_Service::initialize::meta', $meta);
 	}
 
 }

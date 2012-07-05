@@ -36,12 +36,13 @@ class Model_User extends Jelly_Model {
 
 			// Relationships
 			'user_auth' => Jelly::field('hasmany', array('foreign' => 'user_auth')),
+			'user_auth_service' => Jelly::field('hasmany', array('foreign' => 'user_service')),
+			
 			'user_group_member' => Jelly::field('hasmany', array('foreign' => 'user_group_member')),
-			'user_service' => Jelly::field('hasmany', array('foreign' => 'user_service'))
 		));
 
 		// Run event
-		Event::run('Model_User::initialize::after', $meta);
+		Event::run('Model_User::initialize::meta', $meta);
 	}
 
 }

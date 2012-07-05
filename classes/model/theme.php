@@ -28,7 +28,7 @@ class Model_Theme extends Jelly_Model {
 		));
 
 		// Run event
-		Event::run('Model_Theme::initialize::after', $meta);
+		Event::run('Model_Theme::initialize::meta', $meta);
 	}
 
 }

@@ -30,7 +30,7 @@ class Model_Module extends Jelly_Model {
 		));
 
 		// Run event
-		Event::run('Model_Module::initialize::after', $meta);
+		Event::run('Model_Module::initialize::meta', $meta);
 	}
 
 }
