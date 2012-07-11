@@ -22,17 +22,48 @@ class Model_User extends Jelly_Model {
 		// Fields defined by the model
 		$meta->fields(array(
 			'id' => Jelly::field('primary'),
-			'status' => Jelly::field('enum', array('choices' => array(
+			'status' => Jelly::field('enum', array(
+                'choices' => array(
 					'VERIFICATION',
 					'ACTIVE',
 					'INACTIVE',
 					'BLOCKED'
-				))),
-			'email' => Jelly::field('email'),
-			'nickname' => Jelly::field('string'),
-			'first_name' => Jelly::field('string'),
-			'last_name' => Jelly::field('string'),
-			'config' => Jelly::field('serialize'),
+				),
+                'default' => 'VERIFICATION'
+            )),
+			'email' => Jelly::field('email', array(
+                'label' => 'Email address',
+                'unique' => TRUE,
+                'filters' => array(
+                    array('trim')
+                ),
+                'rules' => array(
+                    array('not_empty'),
+                )
+            )),
+			'nickname' => Jelly::field('string', array(
+                'label' => 'Nickname',
+                'unique' => TRUE,
+                'filters' => array(
+                    array('trim')
+                ),
+                'rules' => array(
+                    array('not_empty'),
+                )
+            )),
+			'first_name' => Jelly::field('string', array(
+                'label' => 'First name',
+                'filters' => array(
+                    array('trim')
+                )
+            )),
+			'last_name' => Jelly::field('string', array(
+                'label' => 'Last name',
+                'filters' => array(
+                    array('trim')
+                )
+            )),
+			'config' => Jelly::field('serialized'),
 
 			// Relationships
 			'user_auth' => Jelly::field('hasmany', array('foreign' => 'user_auth')),

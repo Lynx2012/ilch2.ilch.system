@@ -82,8 +82,10 @@ class Ilch_Core extends Kohana_Core {
         // Set ilch routes
         Routing::init();
 
-		// Run event
-		Event::run('Ilch_Core::init::after');
+        // Set system user auth service
+        User_Auth_Service::register('system', __('system_user_service_name'), array(
+            'login_view' => 'user/login/system',
+        ));
 	}
 	
 	/**
