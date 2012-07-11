@@ -14,12 +14,10 @@ ALTER TABLE  `user` CHANGE  `last_active`  `last_active` DATETIME NULL;
 
 ALTER TABLE  `user_auth_service` ADD  `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER  `service`;
 
-ALTER TABLE `config` DROP `type`;
+TRUNCATE TABLE  `config`;
 
-ALTER TABLE  `config` ADD  `callback` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER  `key` ,
-ADD  `callback_params` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER  `callback`;
-
-ALTER TABLE  `config` ADD  `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER  `key`;
+INSERT INTO `config` (`id`, `group`, `key`, `name`, `callback`, `callback_param`, `rules`, `value`) VALUES
+(1, 'system', 'index_page', 'Home page', 'a:2:{i:0;s:20:"Bootstrap_Form_Input";i:1;s:4:"init";}', 'a:1:{s:4:"name";s:0:"";}', 's:0:"";', 's:3:"erw";');
 
 -- ----------------------------------------------------------
 -- ---------------------- 05.07.2012 ------------------------

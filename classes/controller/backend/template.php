@@ -20,6 +20,15 @@ class Controller_Backend_Template extends Controller_Template {
 
         if ($this->auto_render)
         {
+            // Submenu - Tabs
+            $this->template->tab_list = array();
+            
+            // Active tab key
+            $this->template->tab_active = NULL;
+            
+            // Section icon
+            $this->template->icon = NULL;
+            
         	// Get configuration
             $config = Ilch::$config->load('theme')->get('backend');
 			

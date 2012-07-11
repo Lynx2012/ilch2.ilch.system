@@ -10,6 +10,12 @@ class Controller_Template extends Kohana_Controller_Template {
      */
     public function before()
     {
+        if (!$this->request->is_initial())
+        {
+            $this->auto_render = FALSE;
+            $this->template = new stdClass();
+        }
+        
         // Run anything that need to run before this.
         parent::before();       
 
@@ -40,6 +46,11 @@ class Controller_Template extends Kohana_Controller_Template {
         
         // Run anything that needs to run after this.
         parent::after();
+        
+        if (!$this->request->is_initial() AND ! $this->auto_render)
+        {
+            $this->response->body($this->template->content);
+        }
         
         // Run event
         Event::run('Controller_Template::after::after', $this);

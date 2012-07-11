@@ -73,5 +73,16 @@ class Ilch_Media {
         // Run event
         Event::run('Ilch_Media::controller::after', $request);
 	}
+    
+    public static function path($file, $protocol = NULL, $index = TRUE)
+    {
+		if (strpos($file, '://') === FALSE)
+		{
+			// Add the base URL
+			$file = URL::base($protocol, $index).'media/'.$file;
+		}
+        
+        return $file;
+    }
 	
 }
