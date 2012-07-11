@@ -23,6 +23,7 @@ class Model_User_Auth_Service extends Jelly_Model {
 		$meta->fields(array(
 			'id' => Jelly::field('primary'),
 			'service' => Jelly::field('string'),
+            'name' => Jelly::field('string'),
 			'auth_token' => Jelly::field('string'),
 
 			// Relationships

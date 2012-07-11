@@ -29,6 +29,7 @@ return array(
     ':field must be within the range of :param2 to :param3' => ':field muss zwischen :param2 und :param3 liegen',
     ':field does not match the required format' => ':field passt nicht in das geforderte Format',
     ':field must be a url' => ':field muss eine URL sein',
+    ':field already exists' => ':field existiert bereits',
     
     // User default auth service
     'First level Account' => 'Direkter Account',

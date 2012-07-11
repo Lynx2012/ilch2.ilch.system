@@ -14,11 +14,11 @@ class Model_Builder_Theme extends Jelly_Builder
     public function installed()
 	{
 	    // Build query extension
-		$query = $this->where('installed', '=', TRUE);
+		$this->where('installed', '=', TRUE);
         
         // Run event
         Event::run('Model_Builder_Theme::installed::after', $this);
         
-        return $query;
+        return $this;
 	}
 }

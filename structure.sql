@@ -4,6 +4,24 @@
 
 
 -- ----------------------------------------------------------
+-- ---------------------- 11.07.2012 ------------------------
+-- ----------------------------------------------------------
+
+ALTER TABLE  `user` ADD  `registered` DATETIME NOT NULL AFTER  `status` ,
+ADD  `last_active` DATETIME NOT NULL AFTER  `registered`;
+
+ALTER TABLE  `user` CHANGE  `last_active`  `last_active` DATETIME NULL;
+
+ALTER TABLE  `user_auth_service` ADD  `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER  `service`;
+
+ALTER TABLE `config` DROP `type`;
+
+ALTER TABLE  `config` ADD  `callback` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER  `key` ,
+ADD  `callback_params` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER  `callback`;
+
+ALTER TABLE  `config` ADD  `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER  `key`;
+
+-- ----------------------------------------------------------
 -- ---------------------- 05.07.2012 ------------------------
 -- ----------------------------------------------------------
 

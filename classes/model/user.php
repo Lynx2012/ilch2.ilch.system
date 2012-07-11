@@ -31,6 +31,13 @@ class Model_User extends Jelly_Model {
 				),
                 'default' => 'VERIFICATION'
             )),
+            'registered' => Jelly::field('timestamp', array(
+                'format' => 'Y-m-d H:i:s',
+				'auto_now_create' => TRUE
+            )),
+            'last_active' => Jelly::field('timestamp', array(
+                'format' => 'Y-m-d H:i:s',
+            )),
 			'email' => Jelly::field('email', array(
                 'label' => 'Email address',
                 'unique' => TRUE,
