@@ -111,49 +111,17 @@ class Controller_Frontend_User extends Controller_Frontend_Template {
             }
         }
         
-        // Create Form element
-        $form = Bootstrap_Form::init();
-        
-        // Add fields
-        foreach ($fields AS $name => $field)
-        {
-            $error = NULL;
-            
-            if (isset($errors[$name]))
-            {
-                $error = $errors[$name];
-            }
-            elseif (isset($errors['_external'][$name]))
-            {
-                $error = $errors['_external'][$name];
-            }
-            
-            $form->append(Bootstrap_Form_Field::init(array(
-                'element' => $field['element'],
-                'label' => $field['label'],
-                'help' => $error,
-                'type' => ($error) ? Bootstrap_Form_Field::TYPE_ERROR : NULL
-            )));
-        }
-        
         // Submit button
-        $regist = Bootstrap_Button::init(
-                    __('Register'),
-                    Bootstrap_Button::TYPE_SUBMIT,
-                    Bootstrap_Button::COLOR_SUCCESS
-                );
+        $regist = Bootstrap_Button::init(__('Register'), Bootstrap_Button::TYPE_SUBMIT, Bootstrap_Button::COLOR_SUCCESS);
         $regist->prepend(Bootstrap_Icon::init(Bootstrap_Icon::ICON_OK));
 
         // Abort button
-        $abort = Bootstrap_Button::init(
-                    __('Abort'),
-                    URL::site('user/login')
-                );
-
-        // Add submit and abort button to actions field
-        $form->append(Bootstrap_Form_Actions::init(array(
+        $abort = Bootstrap_Button::init(__('Abort'), URL::site('user/login'));
+        
+        // Build form
+        $form = Bootstrap_Builder_Form::init(Bootstrap_Form::init(), $fields, array(
             $regist, $abort
-        )));
+        ), $errors);
         
         // Form
         $this->template->title = __('Registration');
