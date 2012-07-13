@@ -9,7 +9,7 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Ilch_Module_Loader extends Content_Loader {
+class Ilch_Content_Module_Loader extends Content_Loader {
 	
 	const LOADER_NAME = 'module';
 	
@@ -36,8 +36,8 @@ class Ilch_Module_Loader extends Content_Loader {
      */
     public static function set_defaults(array $value)
     {
-        Module_Loader::$_defaults = $value;
-        return Module_Loader::get_defaults();
+        Content_Module_Loader::$_defaults = $value;
+        return Content_Module_Loader::get_defaults();
     }
     
     /**
@@ -45,7 +45,7 @@ class Ilch_Module_Loader extends Content_Loader {
      */
     public static function get_defaults()
     {
-        return Module_Loader::$_defaults;
+        return Content_Module_Loader::$_defaults;
     }
 	
     /**
@@ -60,18 +60,18 @@ class Ilch_Module_Loader extends Content_Loader {
         if (isset($modules[0]))
         {
             // Get default modules
-            if ($modules[0] == Module_Loader::MODULES_DEFAULTS)
+            if ($modules[0] == Content_Module_Loader::MODULES_DEFAULTS)
             {
-                $modules = Module_Loader::_get_from_defaults();
+                $modules = Content_Module_Loader::_get_from_defaults();
             }
             // Get active modules from database
-            elseif ($modules[0] == Module_Loader::MODULES_DATABASE)
+            elseif ($modules[0] == Content_Module_Loader::MODULES_DATABASE)
             {
-                $modules = Module_Loader::_get_from_database();
+                $modules = Content_Module_Loader::_get_from_database();
             }
         }
         
-        return Module_Loader::_load($modules, $ignore_missing, $overload, $initialize);
+        return Content_Module_Loader::_load($modules, $ignore_missing, $overload, $initialize);
     }
     
     /**
@@ -84,9 +84,9 @@ class Ilch_Module_Loader extends Content_Loader {
         $modules = array();
         
         // Collect modules
-        foreach(Module_Loader::$_defaults AS $name)
+        foreach(Content_Module_Loader::$_defaults AS $name)
         {
-	        $modules[self::name(self::LOADER_NAME, $name)] = Module_Manager::find(self::$paths, $name);
+	        $modules[self::name(self::LOADER_NAME, $name)] = Content_Module_Manager::find(self::$paths, $name);
         }
         
         // Load modules
@@ -108,7 +108,7 @@ class Ilch_Module_Loader extends Content_Loader {
         {
             if ($row->loaded())
             {
-                $modules[self::name(self::LOADER_NAME, $row->name)] = Module_Manager::find(self::$paths, $row->name);
+                $modules[self::name(self::LOADER_NAME, $row->name)] = Content_Module_Manager::find(self::$paths, $row->name);
             }
         }
         

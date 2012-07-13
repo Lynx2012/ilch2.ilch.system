@@ -11,7 +11,7 @@ class Controller_Frontend_Template extends Controller_Template {
         Event::run('Controller_Frontend_Template::before::before', $this);
         
         // Load frontend theme
-        Theme_Loader::load(Theme_Loader::THEME_FRONTEND);
+        Content_Theme_Loader::load(Content_Theme_Loader::THEME_FRONTEND);
         
         // Run anything that need ot run before this
         parent::before();

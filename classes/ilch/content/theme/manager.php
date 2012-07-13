@@ -9,7 +9,7 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Ilch_Theme_Manager extends Content_Manager {
+class Ilch_Content_Theme_Manager extends Content_Manager {
 	
     public static function get_installed($section)
     {
@@ -19,7 +19,7 @@ class Ilch_Theme_Manager extends Content_Manager {
         // Filter invalid themes
         foreach ($result AS $row)
         {
-            $path = Theme_Manager::find(Theme_Loader::$paths, $row->name);
+            $path = Content_Theme_Manager::find(Content_Theme_Loader::$paths, $row->name);
             $file = $path.'/views/'.$section.'/index.php';
             
             if (is_file($file))

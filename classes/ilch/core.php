@@ -68,13 +68,13 @@ class Ilch_Core extends Kohana_Core {
         }
         
 		// Load default modules
-		Module_Loader::load((array) Module_Loader::MODULES_DEFAULTS, FALSE, TRUE, FALSE);
+		Content_Module_Loader::load((array) Content_Module_Loader::MODULES_DEFAULTS, FALSE, TRUE, FALSE);
 
         // Initialize Config
         Ilch_Config::init();
 		
 		// Load custom modules
-		Module_Loader::load((array) Module_Loader::MODULES_DATABASE);
+		Content_Module_Loader::load((array) Content_Module_Loader::MODULES_DATABASE);
 		
         // Set ilch routes
         Ilch_Routing::init();

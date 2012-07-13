@@ -9,7 +9,7 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Ilch_Theme_Loader extends Content_Loader {
+class Ilch_Content_Theme_Loader extends Content_Loader {
 	
 	const LOADER_NAME = 'theme';
 	
@@ -31,21 +31,21 @@ class Ilch_Theme_Loader extends Content_Loader {
     public static function load($type)
     {
         // Set default theme
-        $key = Theme_Loader::name(Theme_Loader::LOADER_NAME, Theme_Loader::THEME_DEFAULT);
-		$value = Theme_Manager::find(Theme_Loader::$paths, Theme_Loader::THEME_DEFAULT);
+        $key = Content_Theme_Loader::name(Content_Theme_Loader::LOADER_NAME, Content_Theme_Loader::THEME_DEFAULT);
+		$value = Content_Theme_Manager::find(Content_Theme_Loader::$paths, Content_Theme_Loader::THEME_DEFAULT);
         $default = array($key => $value);
         
         // Get ilch system configuration
         $config = Ilch::$config->load('system');
 
         // Frontend theme
-        if ($type == Theme_Loader::THEME_FRONTEND)
+        if ($type == Content_Theme_Loader::THEME_FRONTEND)
         {
             // Get active theme
             $active = intval($config->get('theme_frontend'));
         }
         // Backend theme
-        elseif ($type == Theme_Loader::THEME_FRONTEND)
+        elseif ($type == Content_Theme_Loader::THEME_FRONTEND)
         {
             // Get active theme
             $active = intval($config->get('theme_backend'));
@@ -63,8 +63,8 @@ class Ilch_Theme_Loader extends Content_Loader {
              
             if ($select->loaded())
             {
-		        $key = Theme_Loader::name(Theme_Loader::LOADER_NAME, $select->name);
-				$value = Theme_Manager::find(Theme_Loader::$paths, $select->name);
+		        $key = Content_Theme_Loader::name(Content_Theme_Loader::LOADER_NAME, $select->name);
+				$value = Content_Theme_Manager::find(Content_Theme_Loader::$paths, $select->name);
                 $theme = array($key => $value);
 				
 		        // If index not exists set default
@@ -81,7 +81,7 @@ class Ilch_Theme_Loader extends Content_Loader {
         }
         
         // Set to module list
-        Theme_Loader::_load($theme);
+        Content_Theme_Loader::_load($theme);
         
         // Theme successfully loaded
         return TRUE;

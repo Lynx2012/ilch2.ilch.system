@@ -13,7 +13,7 @@ class Controller_Backend_Template extends Controller_Template {
         Event::run('Controller_Backend_Template::before::before', $this);
         
         // Load frontend theme
-        Theme_Loader::load(Theme_Loader::THEME_BACKEND);
+        Content_Theme_Loader::load(Content_Theme_Loader::THEME_BACKEND);
         
         // Run anything that need ot run before this
         parent::before();
