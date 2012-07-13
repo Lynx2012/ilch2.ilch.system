@@ -32,7 +32,7 @@ class Ilch_Theme_Loader extends Content_Loader {
     {
         // Set default theme
         $key = Theme_Loader::name(Theme_Loader::LOADER_NAME, Theme_Loader::THEME_DEFAULT);
-		$value = Theme_Loader::find(Theme_Loader::$paths, Theme_Loader::THEME_DEFAULT);
+		$value = Theme_Manager::find(Theme_Loader::$paths, Theme_Loader::THEME_DEFAULT);
         $default = array($key => $value);
         
         // Get ilch system configuration
@@ -64,7 +64,7 @@ class Ilch_Theme_Loader extends Content_Loader {
             if ($select->loaded())
             {
 		        $key = Theme_Loader::name(Theme_Loader::LOADER_NAME, $select->name);
-				$value = Theme_Loader::find(Theme_Loader::$paths, $select->name);
+				$value = Theme_Manager::find(Theme_Loader::$paths, $select->name);
                 $theme = array($key => $value);
 				
 		        // If index not exists set default

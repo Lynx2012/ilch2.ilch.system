@@ -128,20 +128,4 @@ class Ilch_Content_Loader {
     {
         return strtolower(sprintf('%s_%s', $type, $name));
     }
-	
-    /**
-     * Get path to module, theme or other content
-     * @param string like "module" or "theme"
-     * @param string like "ilch", "kohana" or "application"
-     * @param string
-     * @return string
-     */
-	public static function find($paths, $name)
-	{
-		foreach ($paths AS $path)
-		{
-			if (is_dir($dir = $path.DS.$name)) return $dir;
-		}
-		return FALSE;
-	}
 }

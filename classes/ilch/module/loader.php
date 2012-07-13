@@ -91,7 +91,7 @@ class Ilch_Module_Loader extends Content_Loader {
         // Collect modules
         foreach(Module_Loader::$_defaults AS $name)
         {
-	        $modules[self::name(self::LOADER_NAME, $name)] = self::find(self::$paths, $name);
+	        $modules[self::name(self::LOADER_NAME, $name)] = Module_Manager::find(self::$paths, $name);
         }
         
         // Load modules
@@ -113,7 +113,7 @@ class Ilch_Module_Loader extends Content_Loader {
         {
             if ($row->loaded())
             {
-                $modules[self::name(self::LOADER_NAME, $row->name)] = self::find(self::$paths, $row->name);
+                $modules[self::name(self::LOADER_NAME, $row->name)] = Module_Manager::find(self::$paths, $row->name);
             }
         }
         

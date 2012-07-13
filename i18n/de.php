@@ -48,5 +48,11 @@ return array(
     'Password' => 'Passwort',
     'Conf. password' => 'Wdh. Passwort',
     
-    'Here you can set up a new account on our site.' => 'Hier kannst Du einen neuen Account über unsere Seite einrichten.'
+    'Here you can set up a new account on our site.' => 'Hier kannst Du einen neuen Account über unsere Seite einrichten.',
+    
+    // Configuration
+    'General settings' => 'Allgemeine Einstellungen',
+    'Theme settings' => 'Theme',
+    
+    'Home page' => 'Startadresse',
 );
