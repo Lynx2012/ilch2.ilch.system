@@ -21,7 +21,7 @@ class Ilch_Config_Field_Theme extends Bootstrap_Form_Select {
         
         // Set options
         $options = array();
-        $themes = Theme_Manager::get_installed($section);
+        $themes = Content_Theme_Manager::get_installed($section);
         
         foreach ($themes AS $theme)
         {

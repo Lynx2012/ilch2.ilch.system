@@ -21,8 +21,8 @@ class Ilch_Content_Loader {
      */
      public static function set_loaded(array $value)
      {
-         Module_Loader::$_loaded = $value;
-         return Module_Loader::get_loaded();
+         Content_Loader::$_loaded = $value;
+         return Content_Loader::get_loaded();
      }
     
     /**
@@ -31,7 +31,7 @@ class Ilch_Content_Loader {
      */
     public static function get_loaded()
     {
-        return Module_Loader::$_loaded;
+        return Content_Loader::$_loaded;
     }
 
     /**
@@ -99,7 +99,7 @@ class Ilch_Content_Loader {
             Profiler::stop($benchmark);
         }
 
-        return Module_Loader::get_loaded();
+        return Content_Loader::get_loaded();
     }
 
     /**
