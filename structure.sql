@@ -111,3 +111,22 @@ CREATE TABLE IF NOT EXISTS `user_group_member` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `group_id` (`group_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+-- ----------------------------------------------------------
+-- ---------------------- 13.07.2012 ------------------------
+-- ----------------------------------------------------------
+
+ALTER TABLE `config`
+  DROP `name`,
+  DROP `callback`,
+  DROP `callback_param`,
+  DROP `rules`;
+
+TRUNCATE TABLE  `config`;
+
+INSERT INTO `module` (`id`, `name`, `version`, `installed`, `activated`, `position`) VALUES
+(NULL, 'bootstrap', '', 1, 1, 1),
+(NULL, 'fontawesome', '', 1, 1, 1),
+(NULL, 'jquery', '', 1, 1, 1),
+(NULL, 'lessphp', '', 1, 1, 1);

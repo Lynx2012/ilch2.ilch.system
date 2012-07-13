@@ -69,22 +69,15 @@ class Ilch_Core extends Kohana_Core {
         
 		// Load default modules
 		Module_Loader::load((array) Module_Loader::MODULES_DEFAULTS, FALSE, TRUE, FALSE);
-		
-		// Attach a file reader to config
-		Ilch::$config->attach(new Config_File);
-		
-		// Attach a database reader to config
-		Ilch::$config->attach(new Config_Database);
 
-        // Register config groups
-        Config_Register::set('system', 'General settings');
-        Config_Register::set('system_theme', 'Theme settings');
+        // Initialize Config
+        Ilch_Config::init();
 		
 		// Load custom modules
 		Module_Loader::load((array) Module_Loader::MODULES_DATABASE);
 		
         // Set ilch routes
-        Routing::init();
+        Ilch_Routing::init();
         
         // Set system user auth service
         User_Auth_Service::register('system', __('system_user_service_name'), array(

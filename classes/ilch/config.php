@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Transparent extension of the Ilch_Routing class
+ * Transparent extension of the Ilch_Core_Config class
  *
  * @package    Ilch
  * @category   Core
@@ -9,4 +9,4 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Routing extends Ilch_Routing {}
+class Ilch_Config extends Ilch_Core_Config {}
