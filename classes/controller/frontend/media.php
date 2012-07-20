@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Frontend_Media extends Controller_Frontend_Template {
+class Controller_Frontend_Media extends Template_Frontend {
  
 	/**
 	 * @var  boolean  auto render template

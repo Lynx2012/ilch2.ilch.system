@@ -2,7 +2,7 @@
 
 defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Frontend_User extends Controller_Frontend_Template {
+class Controller_Frontend_User extends Template_Frontend {
     
     public function action_login()
     {
@@ -26,7 +26,7 @@ class Controller_Frontend_User extends Controller_Frontend_Template {
 
         // Login
         $this->template->title = __('Login');
-        $this->template->content = View::factory('user/login', array(
+        $this->template->content = View::factory('frontend/user/login', array(
                 'services_view' => $services_view,
                 'services_page' => $services_page
             ));
@@ -125,7 +125,7 @@ class Controller_Frontend_User extends Controller_Frontend_Template {
         
         // Form
         $this->template->title = __('Registration');
-        $this->template->content = View::factory('user/registration/system', array(
+        $this->template->content = View::factory('frontend/user/registration/system', array(
             'form' => $form,
         ));
     }
@@ -134,7 +134,7 @@ class Controller_Frontend_User extends Controller_Frontend_Template {
     {
         // Logout
         $this->template->title = __('Logout');
-        $this->template->content = View::factory('user/logout');
+        $this->template->content = View::factory('frontend/user/logout');
     }
 
 }

@@ -23,7 +23,6 @@ class Model_User_Service extends Jelly_Model {
 		$meta->fields(array(
 			'id' => Jelly::field('primary'),
 			'root' => Jelly::field('integer'),
-			'translate' => Jelly::field('integer'),
 			'name' => Jelly::field('string'),
 			'description' => Jelly::field('string'),
 			'permission' => Jelly::field('serialize'),
