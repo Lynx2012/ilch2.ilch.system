@@ -13,11 +13,23 @@ class Model_Builder_Module extends Jelly_Builder
 {
     public function active()
 	{
-		return $this->where('activated', '=', TRUE);
+	    // Build query extension
+		$this->where('activated', '=', TRUE);
+        
+        // Run event
+        Event::run('Model_Builder_Module::active::after', $this);
+        
+        return $this;
 	}
 	
 	public function order($sorting = 'ASC')
 	{
-		return $this->order_by('position', $sorting);
+        // Build query extension
+        $this->order_by('position', $sorting);
+        
+        // Run event
+        Event::run('Model_Builder_Module::order::after', $this);
+        
+        return $this;
 	}
 }

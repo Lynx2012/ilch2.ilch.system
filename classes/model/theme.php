@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Model for "modules" table
+ * Model for "theme" table
  *
  * @package    Ilch/Core
  * @category   Modules
@@ -9,7 +9,7 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Model_Module extends Jelly_Model {
+class Model_Theme extends Jelly_Model {
 
 	/**
 	 * Initialize the model
@@ -17,7 +17,7 @@ class Model_Module extends Jelly_Model {
 	public static function initialize(Jelly_Meta $meta)
 	{
 		// Set table name
-		$meta->table('module');
+		$meta->table('theme');
 
 		// Fields defined by the model
 		$meta->fields(array(
@@ -25,12 +25,10 @@ class Model_Module extends Jelly_Model {
 			'name' => Jelly::field('string'),
 			'version' => Jelly::field('string'),
 			'installed' => Jelly::field('boolean'),
-			'activated' => Jelly::field('boolean'),
-			'position' => Jelly::field('float'),
 		));
 
 		// Run event
-		Event::run('Model_Module::initialize::meta', $meta);
+		Event::run('Model_Theme::initialize::meta', $meta);
 	}
 
 }
