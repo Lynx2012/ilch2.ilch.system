@@ -2,7 +2,7 @@
 
 defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Backend_Template extends Controller_Template {
+class Ilch_Template_Backend extends Template_General {
 
     // Festlegen des Templates
     public $template = 'backend/index';
@@ -10,7 +10,7 @@ class Controller_Backend_Template extends Controller_Template {
     public function before()
     {       
         // Run event
-        Event::run('Controller_Backend_Template::before::before', $this);
+        Event::run('Template_Backend::before::before', $this);
         
         // Load frontend theme
         Content_Theme_Loader::load(Content_Theme_Loader::THEME_BACKEND);
@@ -40,19 +40,19 @@ class Controller_Backend_Template extends Controller_Template {
         }
         
         // Run event
-        Event::run('Controller_Backend_Template::before::after', $this);
+        Event::run('Template_Backend::before::after', $this);
     }
 
     public function after()
     {
         // Run event
-        Event::run('Controller_Backend_Template::after::before', $this);
+        Event::run('Template_Backend::after::before', $this);
         
         // Run anything that needs to run after this.
         parent::after();
         
         // Run event
-        Event::run('Controller_Backend_Template::after::after', $this);
+        Event::run('Template_Backend::after::after', $this);
     }
 
 }

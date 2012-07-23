@@ -81,7 +81,7 @@ class Ilch_Core extends Kohana_Core {
         
         // Set system user auth service
         User_Auth_Service::register('system', __('system_user_service_name'), array(
-            'login_view' => 'user/login/system',
+            'login_view' => 'frontend/user/login/system',
         ));
 	}
 	

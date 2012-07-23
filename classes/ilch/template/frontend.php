@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Frontend_Template extends Controller_Template {
+class Ilch_Template_Frontend extends Template_General {
 
     // Festlegen des Templates
     public $template = 'frontend/index';
@@ -8,7 +8,7 @@ class Controller_Frontend_Template extends Controller_Template {
     public function before()
     {
         // Run event
-        Event::run('Controller_Frontend_Template::before::before', $this);
+        Event::run('Template_Frontend::before::before', $this);
         
         // Load frontend theme
         Content_Theme_Loader::load(Content_Theme_Loader::THEME_FRONTEND);
@@ -29,19 +29,19 @@ class Controller_Frontend_Template extends Controller_Template {
         }
         
         // Run event
-        Event::run('Controller_Frontend_Template::before::after', $this);
+        Event::run('Template_Frontend::before::after', $this);
     }
 
     public function after()
     {
         // Run event
-        Event::run('Controller_Frontend_Template::after::before', $this);
+        Event::run('Template_Frontend::after::before', $this);
         
         // Run anything that needs to run after this.
         parent::after();
         
         // Run event
-        Event::run('Controller_Frontend_Template::after::after', $this);
+        Event::run('Template_Frontend::after::after', $this);
     }
 
 }

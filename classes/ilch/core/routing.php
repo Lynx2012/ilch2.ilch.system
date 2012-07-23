@@ -29,6 +29,10 @@ class Ilch_Core_Routing {
         // Defaults
         $return_arr = array();
         
+        // Set default uri
+        if (!$uri)
+            $uri = trim(Ilch::$config->load('system')->get('index_page'), '/');
+        
         // If Backend
         if (preg_match('#^backend(?:/(?P<controller>[^/.,;?\n]++)(?:/(?P<action>[^/.,;?\n]++)(?:/(?P<overflow>(.*?)))?)?)?$#uD', $uri, $match))
         {
@@ -51,7 +55,7 @@ class Ilch_Core_Routing {
             $return_arr['directory'] = 'frontend';
             
             // Controller
-            $return_arr['controller'] = (isset($match[1]) === TRUE) ? $match[1] : Ilch::$config->load('system')->get('index_controller');
+            $return_arr['controller'] = (isset($match[1]) === TRUE) ? $match[1] : 'page';
             
             // Action
             $return_arr['action'] = (isset($match[2]) === TRUE) ? $match[2] : 'index';

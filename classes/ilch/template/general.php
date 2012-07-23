@@ -2,7 +2,7 @@
 
 defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Template extends Kohana_Controller_Template {
+abstract class Ilch_Template_General extends Controller_Template {
 
     /**
      * Initialize properties before running the controller methods (actions),
@@ -20,7 +20,7 @@ class Controller_Template extends Kohana_Controller_Template {
         parent::before();       
 
         // Run event
-        Event::run('Controller_Template::before::before', $this);
+        Event::run('Template_General::before::before', $this);
         
         if ($this->auto_render)
         {
@@ -33,7 +33,7 @@ class Controller_Template extends Kohana_Controller_Template {
         }
         
         // Run event
-        Event::run('Controller_Template::before::after', $this);
+        Event::run('Template_General::before::after', $this);
     }
 
     /**
@@ -42,7 +42,7 @@ class Controller_Template extends Kohana_Controller_Template {
     public function after()
     {
         // Run event
-        Event::run('Controller_Template::after::before', $this);
+        Event::run('Template_General::after::before', $this);
         
         // Run anything that needs to run after this.
         parent::after();
@@ -53,7 +53,7 @@ class Controller_Template extends Kohana_Controller_Template {
         }
         
         // Run event
-        Event::run('Controller_Template::after::after', $this);
+        Event::run('Template_General::after::after', $this);
     }
     
 }
