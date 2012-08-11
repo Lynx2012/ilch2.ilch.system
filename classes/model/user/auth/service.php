@@ -34,7 +34,7 @@ class Model_User_Auth_Service extends Jelly_Model {
 		));
 
 		// Run event
-		Event::run('Model_User_Auth_Service::initialize::meta', $meta);
+		Event::run('Classes_Model_User_Auth_Service::initialize::meta', $meta);
 	}
 
 }

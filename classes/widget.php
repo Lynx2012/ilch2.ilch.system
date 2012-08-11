@@ -1,12 +1,12 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Transparent extension of the Ilch_User_Group class
+ * Transparent extension of the Widget_Core class
  *
  * @package    Ilch
- * @category   User
+ * @category   Widget
  * @author     Ilch Team
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class User_Group extends User_Core_Group {}
+class Widget extends Ilch_Widget {}

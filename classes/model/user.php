@@ -80,7 +80,7 @@ class Model_User extends Jelly_Model {
 		));
 
 		// Run event
-		Event::run('Model_User::initialize::meta', $meta);
+		Event::run('Classes_Model_User::initialize::meta', $meta);
 	}
 
 }

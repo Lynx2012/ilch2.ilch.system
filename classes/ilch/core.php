@@ -67,22 +67,7 @@ class Ilch_Core extends Kohana_Core {
             Ilch::$base_url = preg_replace('/[^\/]+$/', '', $_SERVER['SCRIPT_NAME']);
         }
         
-		// Load default modules
-		Content_Module_Loader::load((array) Content_Module_Loader::MODULES_DEFAULTS, FALSE, TRUE, FALSE);
-
-        // Initialize Config
-        Ilch_Config::init();
-		
-		// Load custom modules
-		Content_Module_Loader::load((array) Content_Module_Loader::MODULES_DATABASE);
-		
-        // Set ilch routes
-        Ilch_Routing::init();
-        
-        // Set system user auth service
-        User_Auth_Service::register('system', __('system_user_service_name'), array(
-            'login_view' => 'frontend/user/login/system',
-        ));
+		Ilch_Init::init();
 	}
 	
 	/**
@@ -96,7 +81,7 @@ class Ilch_Core extends Kohana_Core {
 	public static function deinit()
 	{
 		// Run event
-		Event::run('Ilch_Core::deinit::before');
+		Event::run('Classes_Ilch_Core::deinit::before');
 		
 		if (Ilch::$_init)
 		{
@@ -108,7 +93,7 @@ class Ilch_Core extends Kohana_Core {
 		}
 		
 		// Run event
-		Event::run('Ilch_Core::deinit::after');
+		Event::run('Classes_Ilch_Core::deinit::after');
 	}
     
     /**

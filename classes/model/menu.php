@@ -28,7 +28,7 @@ class Model_Menu extends Jelly_Model {
 		));
 
 		// Run event
-		Event::run('Model_Menu::initialize::meta', $meta);
+		Event::run('Classes_Model_Menu::initialize::meta', $meta);
 	}
 
 }

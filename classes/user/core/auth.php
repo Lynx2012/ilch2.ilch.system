@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Transparent extension of the Ilch_User_Group class
+ * Missing comment
  *
  * @package    Ilch
  * @category   User
@@ -9,4 +9,8 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class User_Group extends User_Core_Group {}
+class User_Core_Auth {
+    
+    
+    
+}

@@ -35,7 +35,7 @@ class Model_User_Group_Member extends Jelly_Model {
 		));
 
 		// Run event
-		Event::run('Model_User_Group_Member::initialize::meta', $meta);
+		Event::run('Classes_Model_User_Group_Member::initialize::meta', $meta);
 	}
 
 }

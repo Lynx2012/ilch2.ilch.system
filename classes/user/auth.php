@@ -9,4 +9,4 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class User_Auth extends Ilch_User_Auth {}
+class User_Auth extends User_Core_Auth {}

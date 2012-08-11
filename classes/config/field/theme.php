@@ -9,4 +9,4 @@
  * @copyright  (c) 2012 Ilch Team
  * @license    http://www.ilch-pluto.net/license
  */
-class Config_Field_Theme extends Ilch_Config_Field_Theme {}
+class Config_Field_Theme extends Config_Core_Field_Theme {}

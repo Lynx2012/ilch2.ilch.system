@@ -91,7 +91,7 @@ class Ilch_Content_Loader {
         if ($initialize) Content_Loader::initialize_loaded();
 
         // Run event
-        Event::run('Ilch_Content_Loader::_load::after');
+        Event::run('Classes_Ilch_Content_Loader::_load::after');
 
         if (isset($benchmark))
         {

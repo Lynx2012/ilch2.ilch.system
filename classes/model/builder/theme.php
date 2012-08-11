@@ -17,7 +17,7 @@ class Model_Builder_Theme extends Jelly_Builder
 		$this->where('installed', '=', TRUE);
         
         // Run event
-        Event::run('Model_Builder_Theme::installed::after', $this);
+        Event::run('Classes_Model_Builder_Theme::installed::after', $this);
         
         return $this;
 	}

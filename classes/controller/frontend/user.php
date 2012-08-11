@@ -2,7 +2,7 @@
 
 defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Frontend_User extends Template_Frontend {
+class Controller_Frontend_User extends Controller_Frontend_Template {
     
     public function action_login()
     {
@@ -119,7 +119,7 @@ class Controller_Frontend_User extends Template_Frontend {
         $abort = Bootstrap_Button::init(__('Abort'), URL::site('user/login'));
         
         // Build form
-        $form = Bootstrap_Builder_Form::init(Bootstrap_Form::init(), $fields, array(
+        $form = Bootstrap_Form_Builder::init(Bootstrap_Form::init(), $fields, array(
             $regist, $abort
         ), $errors);
         

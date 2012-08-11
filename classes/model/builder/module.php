@@ -17,7 +17,7 @@ class Model_Builder_Module extends Jelly_Builder
 		$this->where('activated', '=', TRUE);
         
         // Run event
-        Event::run('Model_Builder_Module::active::after', $this);
+        Event::run('Classes_Model_Builder_Module::active::after', $this);
         
         return $this;
 	}
@@ -28,7 +28,7 @@ class Model_Builder_Module extends Jelly_Builder
         $this->order_by('position', $sorting);
         
         // Run event
-        Event::run('Model_Builder_Module::order::after', $this);
+        Event::run('Classes_Model_Builder_Module::order::after', $this);
         
         return $this;
 	}
